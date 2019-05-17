@@ -2,24 +2,34 @@ import base64
 import json
 import logging
 import time
+import ssl
 import websocket
 
 class SamsungTV():
 
-    _URL_FORMAT = 'ws://{host}:{port}/api/v2/channels/samsung.remote.control?name={name}'
+    _URL_FORMAT = 'wss://{host}:{port}/api/v2/channels/samsung.remote.control?name={name}&token={token}'
 
     _KEY_INTERVAL = 1.5
 
-    def __init__(self, host, port=8001, name='SamsungTvRemote'):
+    def __init__(self, host, token, port=8002, name='SamsungTvRemote'):
         self.connection = websocket.create_connection(
             self._URL_FORMAT.format(**{
-                'host': host, 
-                'port': port, 
-                'name': self._serialize_string(name)
-            })
+                'host': host,
+                'port': port,
+                'name': self._serialize_string(name),
+		        'token': token
+            }),
+           sslopt={"cert_reqs": ssl.CERT_NONE}
         )
+        self.handshaken = False
 
         response = json.loads(self.connection.recv())
+
+        if response.get('data') and response.get('data').get('token'):
+            token = response.get('data').get('token')
+            print(token)
+
+
         if response['event'] != 'ms.channel.connect':
             self.close()
             raise Exception(response)
@@ -98,7 +108,7 @@ class SamsungTV():
 
     # channel
     def channel_list(self):
-        self.send_key('KEY_CH_LIST')    
+        self.send_key('KEY_CH_LIST')
 
     def channel(self, ch):
         for c in str(ch):
