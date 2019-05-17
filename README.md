@@ -17,11 +17,11 @@ It currently supports modern (post-2016) TVs with Ethernet or Wi-Fi connectivity
 ## Install
 
 ```bash
-$ pip3 install git+https://github.com/vrachieru/samsung-tv-api.git
+$ pip3 install git+https://github.com/marysieek/samsung-tv-api.git
 ```
 or
 ```bash
-$ git clone https://github.com/vrachieru/samsung-tv-api.git
+$ git clone https://github.com/marysieek/samsung-tv-api.git
 $ pip3 install ./samsung-tv-api
 ```
 
