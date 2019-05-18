@@ -11,13 +11,13 @@ class SamsungTV():
 
     _KEY_INTERVAL = 1.5
 
-    def __init__(self, host, token, port=8002, name='SamsungTvRemote'):
+    def __init__(self, host, token='', port=8002, name='SamsungTvRemote'):
         self.connection = websocket.create_connection(
             self._URL_FORMAT.format(**{
                 'host': host,
                 'port': port,
                 'name': self._serialize_string(name),
-		        'token': token
+		'token': token
             }),
            sslopt={"cert_reqs": ssl.CERT_NONE}
         )
