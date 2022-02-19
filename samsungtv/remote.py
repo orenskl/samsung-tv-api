@@ -25,9 +25,9 @@ class SamsungTV():
 
         response = json.loads(self.connection.recv())
 
+        self.token = None
         if response.get('data') and response.get('data').get('token'):
-            token = response.get('data').get('token')
-            print(token)
+            self.token = response.get('data').get('token')
 
 
         if response['event'] != 'ms.channel.connect':
@@ -41,6 +41,9 @@ class SamsungTV():
         if isinstance(string, str):
             string = str.encode(string)
         return base64.b64encode(string).decode('utf-8')
+
+    def get_token(self):
+        return self.token
 
     def close(self):
         if self.connection:
